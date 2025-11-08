@@ -7,7 +7,7 @@
 </head>
 
 <body>
-  <div x-data="trelloApp()" x-init="init()">
+  <div x-data="trelloAppli()" x-init="init()">
 
     <h1>Mini Trello</h1>
     <p>Gestionnaire de taches</p>
@@ -75,7 +75,7 @@
 
       Alpine.store('filter', { current: 'all' });
 
-      Alpine.data('trelloApp', () => ({
+      Alpine.data('trelloAppli', () => ({
         tasks: [],
         newTask: { title: '', description: '', status: 'todo' },
         editingIndex: null,
