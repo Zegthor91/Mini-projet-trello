@@ -1,10 +1,157 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
-    
-    <h1 x-data="{ message: 'Hello World!' }" x-text="message"></h1>
 
+<body>
+  <div x-data="trelloApp()" x-init="init()">
+
+    <h1>Mini Trello</h1>
+    <p>Gestionnaire de taches</p>
+
+    <h2 x-text="editingIndex !== null ? 'Modifier la tâche' : 'Ajouter une tâche'"></h2>
+    <div>
+      <label>Titre</label>
+      <input type="text" x-model="newTask.title" @keyup.enter="editingIndex !== null ? updateTask() : addTask()">
+    </div>
+
+    <div>
+      <label>Description</label>
+      <textarea x-model="newTask.description"></textarea>
+    </div>
+
+    <div>
+      <label>Statut</label>
+      <select x-model="newTask.status">
+        <option value="todo">A faire</option>
+        <option value="inprogress">En cours</option>
+        <option value="done">Terminé</option>
+      </select>
+    </div>
+
+    <div>
+      <button @click="editingIndex !== null ? updateTask() : addTask()">
+        <span x-text="editingIndex !== null ? 'Mettre à jour' : 'Ajouter'"></span>
+      </button>
+      <button x-show="editingIndex !== null" @click="cancelEdit()">Annuler</button>
+    </div>
+
+    <div>
+      <button @click="$store.filter.current = 'all'">Tous (<span x-text="tasks.length"></span>)</button>
+      <button @click="$store.filter.current = 'todo'">A faire (<span x-text="getTasksByStatus('todo').length"></span>)</button>
+      <button @click="$store.filter.current = 'inprogress'">En cours (<span x-text="getTasksByStatus('inprogress').length"></span>)</button>
+      <button @click="$store.filter.current = 'done'">Terminés (<span x-text="getTasksByStatus('done').length"></span>)</button>
+    </div>
+
+    <div>
+      <template x-for="(task, i) in filteredTasks" :key="task.id">
+        <div>
+          <h3 x-text="task.title"></h3>
+          <p x-text="getStatusLabel(task.status)"></p>
+          <p x-text="task.description || 'Pas de description'"></p>
+
+          <select :value="task.status" @change="changeStatus(task.id, $event.target.value)">
+            <option value="todo">A faire</option>
+            <option value="inprogress">En cours</option>
+            <option value="done">Terminé</option>
+          </select>
+
+          <button @click="editTask(task.id)">Modifier</button>
+          <button @click="removeTask(task.id)">Supprimer</button>
+          <hr>
+        </div>
+      </template>
+    </div>
+    <div x-show="filteredTasks.length === 0">
+      <p>Aucune tâche pour le moment</p>
+    </div>
+
+  </div>
+  <script>
+    document.addEventListener('alpine:init', () => {
+
+      Alpine.store('filter', { current: 'all' });
+
+      Alpine.data('trelloApp', () => ({
+        tasks: [],
+        newTask: { title: '', description: '', status: 'todo' },
+        editingIndex: null,
+
+        init() { this.loadTasks(); },
+
+        addTask() {
+          if (!this.newTask.title.trim()) return alert('Le titre est obligatoire !');
+          this.tasks.push({ 
+            ...this.newTask, 
+            id: Date.now()
+          });
+          this.saveTasks();
+          this.resetForm();
+        },
+
+        editTask(id) {
+          const taskIndex = this.tasks.findIndex(t => t.id === id);
+          this.editingIndex = taskIndex;
+          this.newTask = { ...this.tasks[taskIndex] };
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        updateTask() {
+          if (!this.newTask.title.trim()) return alert('Le titre est obligatoire !');
+          this.tasks[this.editingIndex] = { ...this.newTask };
+          this.saveTasks();
+          this.cancelEdit();
+        },
+
+        cancelEdit() {
+          this.editingIndex = null;
+          this.resetForm();
+        },
+
+        removeTask(id) {
+          if (confirm('Supprimer cette tache ?')) {
+            const taskIndex = this.tasks.findIndex(t => t.id === id);
+            this.tasks.splice(taskIndex, 1);
+            this.saveTasks();
+          }
+        },
+
+        changeStatus(id, newStatus) {
+          const task = this.tasks.find(t => t.id === id);
+          task.status = newStatus;
+          this.saveTasks();
+        },
+
+        resetForm() {
+          this.newTask = { title: '', description: '', status: 'todo' };
+        },
+
+        saveTasks() {
+          localStorage.setItem('trelloTasks', JSON.stringify(this.tasks));
+        },
+
+        loadTasks() {
+          const saved = localStorage.getItem('trelloTasks');
+          if (saved) this.tasks = JSON.parse(saved);
+        },
+
+        get filteredTasks() {
+          const f = this.$store.filter.current;
+          return f === 'all' ? this.tasks : this.tasks.filter(t => t.status === f);
+        },
+
+        getTasksByStatus(status) {
+          return this.tasks.filter(t => t.status === status);
+        },
+
+        getStatusLabel(s) {
+          return { todo: 'A faire', inprogress: 'En cours', done: 'Terminé' }[s] || s;
+        }
+      }));
+    });
+  </script>
 </body>
 </html>
