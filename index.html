@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  <link rel="stylesheet" href="style.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div x-data="trelloAppli()" x-init="init()">
@@ -14,62 +14,57 @@
 
     <h2 x-text="editingIndex !== null ? 'Modifier la tache' : 'Ajouter une tache'"></h2>
     <div>
-      <label>Titre</label>
-      <input type="text" x-model="newTask.title" @keyup.enter="editingIndex !== null ? updateTask() : addTask()">
+        <label>Titre</label>
+        <input type="text" x-model="newTask.title" @keyup.enter="editingIndex !== null ? updateTask() : addTask()">
     </div>
     <div>
-      <label>Description</label>
-      <textarea x-model="newTask.description"></textarea>
+        <label>Description</label>
+        <textarea x-model="newTask.description"></textarea>
     </div>
     <div>
-      <label>Statut</label>
-      <select x-model="newTask.status">
+        <label>Statut</label>
+        <select x-model="newTask.status">
         <option value="todo">A faire</option>
         <option value="working">En cours</option>
         <option value="completed">Termine</option>
-      </select>
     </div>
 
     <div>
-      <button @click="editingIndex !== null ? updateTask() : addTask()">
-        <span x-text="editingIndex !== null ? 'Mettre a jour' : 'Ajouter'"></span>
-      </button>
-      <button x-show="editingIndex !== null" @click="cancelEdit()">Annuler</button>
+        <button @click="editingIndex !== null ? updateTask() : addTask()">
+        <span x-text="editingIndex !== null ? 'Mettre a jour' : 'Ajouter'"></span></button>
+        <button x-show="editingIndex !== null" @click="cancelEdit()">Annuler</button>
     </div>
 
     <div>
-      <label>Rechercher par titre</label>
-      <input type="text" x-model="search" placeholder="Recherche...">
+        <label>Rechercher par titre</label>
+        <input type="text" x-model="search" placeholder="Recherche...">
     </div>
 
     <div>
-      <button @click="$store.filter.current = 'all'">Tous (<span x-text="tasks.length"></span>)</button>
-      <button @click="$store.filter.current = 'todo'">A faire (<span x-text="getTasksByStatus('todo').length"></span>)</button>
-      <button @click="$store.filter.current = 'working'">En cours (<span x-text="getTasksByStatus('working').length"></span>)</button>
-      <button @click="$store.filter.current = 'completed'">Terminés (<span x-text="getTasksByStatus('completed').length"></span>)</button>
+        <button @click="$store.filter.current = 'all'">Tous (<span x-text="tasks.length"></span>)</button>
+        <button @click="$store.filter.current = 'todo'">A faire (<span x-text="getTasksByStatus('todo').length"></span>)</button>
+        <button @click="$store.filter.current = 'working'">En cours (<span x-text="getTasksByStatus('working').length"></span>)</button>
+        <button @click="$store.filter.current = 'completed'">Terminés (<span x-text="getTasksByStatus('completed').length"></span>)</button>
     </div>
 
     <div>
-      <template x-for="(task, i) in filteredTasks" :key="task.id">
-        <div>
-          <h3 x-text="task.title"></h3>
-          <p x-text="getStatusLabel(task.status)"></p>
-          <p x-text="task.description || 'Pas de description'"></p>
-
-          <select :value="task.status" @change="changeStatus(task.id, $event.target.value)">
-            <option value="todo">A faire</option>
-            <option value="working">En cours</option>
-            <option value="completed">Terminé</option>
-          </select>
-
-          <button @click="editTask(task.id)">Modifier</button>
-          <button @click="removeTask(task.id)">Supprimer</button>
-          <hr>
-        </div>
+        <template x-for="(task, i) in filteredTasks" :key="task.id">
+            <div>
+                <h3 x-text="task.title"></h3>
+                <p x-text="getStatusLabel(task.status)"></p>
+                <p x-text="task.description || 'Pas de description'"></p>
+                <select :value="task.status" @change="changeStatus(task.id, $event.target.value)">
+                    <option value="todo">A faire</option>
+                    <option value="working">En cours</option>
+                    <option value="completed">Terminé</option>
+                </select>
+                <button @click="editTask(task.id)">Modifier</button>
+                <button @click="removeTask(task.id)">Supprimer</button>
+             </div>
       </template>
     </div>
     <div x-show="filteredTasks.length === 0">
-      <p>Aucune tache pour l'instant</p>
+        <p>Aucune tache pour l'instant</p>
     </div>
   </div>
 
