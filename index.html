@@ -40,6 +40,11 @@
     </div>
 
     <div>
+      <label>Rechercher par titre</label>
+      <input type="text" x-model="search" placeholder="Rechercher...">
+    </div>
+
+    <div>
       <button @click="$store.filter.current = 'all'">Tous (<span x-text="tasks.length"></span>)</button>
       <button @click="$store.filter.current = 'todo'">A faire (<span x-text="getTasksByStatus('todo').length"></span>)</button>
       <button @click="$store.filter.current = 'inprogress'">En cours (<span x-text="getTasksByStatus('inprogress').length"></span>)</button>
@@ -70,6 +75,7 @@
     </div>
 
   </div>
+
   <script>
     document.addEventListener('alpine:init', () => {
 
@@ -79,11 +85,12 @@
         tasks: [],
         newTask: { title: '', description: '', status: 'todo' },
         editingIndex: null,
+        search: '',
 
         init() { this.loadTasks(); },
 
         addTask() {
-          if (!this.newTask.title.trim()) return alert('Le titre est obligatoire !');
+          if (!this.newTask.title.trim()) return alert('Le titre est obligatoire');
           this.tasks.push({ 
             ...this.newTask, 
             id: Date.now()
@@ -100,7 +107,7 @@
         },
 
         updateTask() {
-          if (!this.newTask.title.trim()) return alert('Le titre est obligatoire !');
+          if (!this.newTask.title.trim()) return alert('Veuillez ajouter un titre');
           this.tasks[this.editingIndex] = { ...this.newTask };
           this.saveTasks();
           this.cancelEdit();
@@ -112,7 +119,7 @@
         },
 
         removeTask(id) {
-          if (confirm('Supprimer cette tache ?')) {
+          if (confirm('Êtes-vous certain de supprimer cette tâche ?')) {
             const taskIndex = this.tasks.findIndex(t => t.id === id);
             this.tasks.splice(taskIndex, 1);
             this.saveTasks();
@@ -140,7 +147,15 @@
 
         get filteredTasks() {
           const f = this.$store.filter.current;
-          return f === 'all' ? this.tasks : this.tasks.filter(t => t.status === f);
+          let filtered = f === 'all' ? this.tasks : this.tasks.filter(t => t.status === f);
+          
+          if (this.search.trim() !== '') {
+            filtered = filtered.filter(t => 
+              t.title.toLowerCase().includes(this.search.toLowerCase())
+            );
+          }
+          
+          return filtered;
         },
 
         getTasksByStatus(status) {
