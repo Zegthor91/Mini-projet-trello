@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 
 <body>
@@ -12,17 +13,15 @@
     <h1>Mini Trello</h1>
     <p>Gestionnaire de taches</p>
 
-    <h2 x-text="editingIndex !== null ? 'Modifier la tâche' : 'Ajouter une tâche'"></h2>
+    <h2 x-text="editingIndex !== null ? 'Modifier la tache' : 'Ajouter une tache'"></h2>
     <div>
       <label>Titre</label>
       <input type="text" x-model="newTask.title" @keyup.enter="editingIndex !== null ? updateTask() : addTask()">
     </div>
-
     <div>
       <label>Description</label>
       <textarea x-model="newTask.description"></textarea>
     </div>
-
     <div>
       <label>Statut</label>
       <select x-model="newTask.status">
@@ -71,9 +70,8 @@
       </template>
     </div>
     <div x-show="filteredTasks.length === 0">
-      <p>Aucune tâche pour le moment</p>
+      <p>Aucune tâche pour l'instant</p>
     </div>
-
   </div>
 
   <script>
@@ -119,7 +117,7 @@
         },
 
         removeTask(id) {
-          if (confirm('Êtes-vous certain de supprimer cette tâche ?')) {
+          if (confirm('Êtes-vous certain de supprimer cette tache ?')) {
             const taskIndex = this.tasks.findIndex(t => t.id === id);
             this.tasks.splice(taskIndex, 1);
             this.saveTasks();
