@@ -26,28 +26,28 @@
       <label>Statut</label>
       <select x-model="newTask.status">
         <option value="todo">A faire</option>
-        <option value="inprogress">En cours</option>
-        <option value="done">Terminé</option>
+        <option value="working">En cours</option>
+        <option value="completed">Termine</option>
       </select>
     </div>
 
     <div>
       <button @click="editingIndex !== null ? updateTask() : addTask()">
-        <span x-text="editingIndex !== null ? 'Mettre à jour' : 'Ajouter'"></span>
+        <span x-text="editingIndex !== null ? 'Mettre a jour' : 'Ajouter'"></span>
       </button>
       <button x-show="editingIndex !== null" @click="cancelEdit()">Annuler</button>
     </div>
 
     <div>
       <label>Rechercher par titre</label>
-      <input type="text" x-model="search" placeholder="Rechercher...">
+      <input type="text" x-model="search" placeholder="Recherche...">
     </div>
 
     <div>
       <button @click="$store.filter.current = 'all'">Tous (<span x-text="tasks.length"></span>)</button>
       <button @click="$store.filter.current = 'todo'">A faire (<span x-text="getTasksByStatus('todo').length"></span>)</button>
-      <button @click="$store.filter.current = 'inprogress'">En cours (<span x-text="getTasksByStatus('inprogress').length"></span>)</button>
-      <button @click="$store.filter.current = 'done'">Terminés (<span x-text="getTasksByStatus('done').length"></span>)</button>
+      <button @click="$store.filter.current = 'working'">En cours (<span x-text="getTasksByStatus('working').length"></span>)</button>
+      <button @click="$store.filter.current = 'completed'">Terminés (<span x-text="getTasksByStatus('completed').length"></span>)</button>
     </div>
 
     <div>
@@ -59,8 +59,8 @@
 
           <select :value="task.status" @change="changeStatus(task.id, $event.target.value)">
             <option value="todo">A faire</option>
-            <option value="inprogress">En cours</option>
-            <option value="done">Terminé</option>
+            <option value="working">En cours</option>
+            <option value="completed">Terminé</option>
           </select>
 
           <button @click="editTask(task.id)">Modifier</button>
@@ -70,7 +70,7 @@
       </template>
     </div>
     <div x-show="filteredTasks.length === 0">
-      <p>Aucune tâche pour l'instant</p>
+      <p>Aucune tache pour l'instant</p>
     </div>
   </div>
 
@@ -88,7 +88,7 @@
         init() { this.loadTasks(); },
 
         addTask() {
-          if (!this.newTask.title.trim()) return alert('Le titre est obligatoire');
+          if (!this.newTask.title.trim()) return alert('Veuillez ajouter un titre');
           this.tasks.push({ 
             ...this.newTask, 
             id: Date.now()
@@ -117,7 +117,7 @@
         },
 
         removeTask(id) {
-          if (confirm('Êtes-vous certain de supprimer cette tache ?')) {
+          if (confirm('Etes-vous certain de supprimer cette tache ?')) {
             const taskIndex = this.tasks.findIndex(t => t.id === id);
             this.tasks.splice(taskIndex, 1);
             this.saveTasks();
@@ -161,7 +161,11 @@
         },
 
         getStatusLabel(s) {
-          return { todo: 'A faire', inprogress: 'En cours', done: 'Terminé' }[s] || s;
+          return { 
+            todo: 'A faire', 
+            working: 'En cours', 
+            completed: 'Terminé' 
+          }[s] || s;
         }
       }));
     });

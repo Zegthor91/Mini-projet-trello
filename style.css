@@ -4,54 +4,60 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100vh;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f5f7;
-  padding: 20px;
-  color: #172b4d;
+  padding: 10px;
+  color: #000;
 }
 
 h1 {
-  font-size: 32px;
-  margin-bottom: 5px;
-  color: #172b4d;
+  font-size: 24px;
+  margin-bottom: 3px;
+  color: #000;
 }
 
 h2 {
-  font-size: 20px;
-  margin: 20px 0 15px 0;
-  color: #5e6c84;
+  font-size: 16px;
+  margin: 10px 0 8px 0;
+  color: #000;
 }
 
 h3 {
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: #172b4d;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #000;
 }
 
 p {
-  color: #5e6c84;
-  margin-bottom: 15px;
+  color: #000;
+  margin-bottom: 8px;
+  font-size: 13px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   font-weight: bold;
-  color: #5e6c84;
-  font-size: 14px;
+  color: #000;
+  font-size: 12px;
 }
 
 input[type="text"],
 textarea,
 select {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 6px;
+  margin-bottom: 8px;
   border: 2px solid #dfe1e6;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: Arial, sans-serif;
+  color: #000;
 }
 
 input[type="text"]:focus,
@@ -63,16 +69,16 @@ select:focus {
 
 textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 50px;
 }
 
 button {
-  padding: 10px 20px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  padding: 6px 12px;
+  margin-right: 6px;
+  margin-bottom: 6px;
   border: none;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -89,7 +95,7 @@ button:first-of-type:hover {
 
 button:not(:first-of-type) {
   background-color: #ebecf0;
-  color: #172b4d;
+  color: #000;
 }
 
 button:not(:first-of-type):hover {
@@ -99,67 +105,67 @@ button:not(:first-of-type):hover {
 hr {
   border: none;
   border-top: 1px solid #dfe1e6;
-  margin: 25px 0;
+  margin: 10px 0;
 }
 
 .task-card {
   background-color: white;
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 10px;
+  margin-bottom: 8px;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .task-card h3 {
-  color: #172b4d;
+  color: #000;
 }
 
 .task-card p:first-of-type {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .status-todo {
   background-color: #fef3cd;
-  color: #856404;
+  color: #000;
 }
 
 .status-inprogress {
   background-color: #cfe2ff;
-  color: #084298;
+  color: #000;
 }
 
 .status-done {
   background-color: #d1e7dd;
-  color: #0f5132;
+  color: #000;
 }
 
 .task-card select {
   width: auto;
-  margin-bottom: 10px;
-  margin-right: 10px;
+  margin-bottom: 6px;
+  margin-right: 6px;
 }
 
 .task-card button {
-  font-size: 13px;
-  padding: 8px 15px;
+  font-size: 11px;
+  padding: 5px 10px;
 }
 
 .empty-message {
   text-align: center;
-  padding: 40px;
-  color: #5e6c84;
+  padding: 20px;
+  color: #000;
   font-style: italic;
 }
 
 .filter-buttons button {
   background-color: white;
   border: 2px solid #dfe1e6;
-  color: #172b4d;
+  color: #000;
 }
 
 .filter-buttons button:hover {
